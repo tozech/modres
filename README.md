@@ -8,6 +8,7 @@ Model-based resampling
 
 * python => 3.6
 * numpy => 1.13.1
+* scipy => 0.19.1
 * pandas => 0.20.3
 
 ### optional

@@ -92,3 +92,23 @@ if __name__ == '__main__':
 
 
     data_1h = data_15min.resample('1h', closed='right', label='right').mean()
+
+    #%%
+    fig, ax = plt.subplots()
+    sin_1min.plot(ax=ax)
+    sin_1min_smooth = pd.rolling_window(sin_1min, window=20,
+                                        win_type='cosine',
+                                        center=True, min_periods=1)
+    sin_1min_smooth.plot(ax=ax, linestyle='--')
+    a = sin_1min.iloc[60:-61]
+    b = sin_1min_smooth.iloc[60:-61]
+    r = b - a
+    ar = r / a
+    rmse = np.sqrt(np.mean(r**2))
+    rel_rmse = rmse / a.mean()
+    rel_bias = r.mean() / a.mean()
+    rel_mae = r.abs().mean() / a.mean()
+    print("BIAS:{0:%} RMSE: {1:%} MAE: {2:%}".format(rel_bias,
+                                                     rel_rmse,
+                                                     rel_mae))
+    #pd.testing.assert_series_equal(a, b)
