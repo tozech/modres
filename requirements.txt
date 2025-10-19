@@ -1,0 +1,9 @@
+numpy
+scipy
+pandas
+
+# Optional dependencies for testing and visualization
+pytest
+hypothesis
+matplotlib
+

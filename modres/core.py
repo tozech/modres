@@ -60,13 +60,12 @@ def upsample_det_model(data, det_model):
     input_freq, target_freq, freq_quoi = _assert_freqs()
 
     def _duplicate_target_times(x):
-        d_target_freq = x.resample(target_freq)
-        d_target_freq = d_target_freq.fillna(method='bfill', limit=freq_quoi)
+        d_target_freq = x.resample(target_freq).bfill(limit=freq_quoi)
         return d_target_freq
     # duplicate values which apply for the entire period
     data_target_freq = _duplicate_target_times(data)
     # Downsample deterministic modell to target freq and duplicate values
-    det_model_input_freq = det_model.resample(input_freq, closed='right', label='right')
+    det_model_input_freq = det_model.resample(input_freq, closed='right', label='right').mean()
     det_model_input_freq = _duplicate_target_times(det_model_input_freq)
     # Correction factors for upsampling according to model
     corr_factors = det_model / det_model_input_freq
